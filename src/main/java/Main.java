@@ -1,6 +1,7 @@
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,13 +19,12 @@ public class Main {
         arrayList = stream
                 .sorted(order)
                 .collect(Collectors.toList());
-        if (arrayList.size() != 0) {
+        if (!arrayList.isEmpty()) {
             min = arrayList.get(0);
             max = arrayList.get(arrayList.size() - 1);
             minMaxConsumer.accept(min, max);
-            if (min == null && max == null) {
-                minMaxConsumer.accept(null, null);
-            }
+        } else {
+            minMaxConsumer.accept(null, null);
         }
     }
 
@@ -39,10 +39,10 @@ public class Main {
 
 
 //        Задача №2
-        int count = list.stream()
+        AtomicInteger integer = new AtomicInteger(1);
+        long count = list.stream()
                 .filter(n -> n % 2 == 0)
-                .toList()
-                .size();
+                .peek(i -> System.out.println(integer.getAndIncrement() + "-ое" + " четное число: " + i)).count();
         System.out.println("Количество четных чисел: " + count);
     }
 }
